@@ -1,6 +1,7 @@
 ﻿using BethanysPieShop.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,9 @@ namespace BethanysPieShop
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>();
+
             services.AddTransient<IPieRepository, PieRepository>();     //whenever someone is asking for an IPieRepo, new instance of MockPieRepo will be returned
             services.AddTransient<IFeedbackRepository, FeedbackRepository>();     
             
@@ -39,6 +43,9 @@ namespace BethanysPieShop
             app.UseDeveloperExceptionPage();    //adds exception when something goes wrong in app - ONLY use in dev mode
             app.UseStatusCodePages();           //show info about status of request (e.g. status 400 or 500)
             app.UseStaticFiles();               //search wwwroot by default and return static file from there
+
+            app.UseAuthentication();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
