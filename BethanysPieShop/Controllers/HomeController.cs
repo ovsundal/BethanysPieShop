@@ -19,7 +19,7 @@ namespace BethanysPieShop.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            
+
 
             var pies = _pieRepository.GetAllPies().OrderBy(pie => pie.Name);
 

@@ -1,17 +1,29 @@
 ﻿using BethanysPieShop.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BethanysPieShop
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IPieRepository, MockPieRepository>();     //whenever someone is asking for an IPieRepo, new instance of MockPieRepo will be returned
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddTransient<IPieRepository, PieRepository>();     //whenever someone is asking for an IPieRepo, new instance of MockPieRepo will be returned
             //services.AddSingleton                                         //only one single instance is going to be created of the type, same instance will always be returned
             //services.AddScoped                                            //returnes the same instance. If request goes out of scope, instance is removed and with the next request, a new instance will be returned
 
