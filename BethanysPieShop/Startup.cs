@@ -24,6 +24,8 @@ namespace BethanysPieShop
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient<IPieRepository, PieRepository>();     //whenever someone is asking for an IPieRepo, new instance of MockPieRepo will be returned
+            services.AddTransient<IFeedbackRepository, FeedbackRepository>();     
+            
             //services.AddSingleton                                         //only one single instance is going to be created of the type, same instance will always be returned
             //services.AddScoped                                            //returnes the same instance. If request goes out of scope, instance is removed and with the next request, a new instance will be returned
 
