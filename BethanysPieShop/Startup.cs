@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using BethanysPieShop.Models;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,10 @@ namespace BethanysPieShop
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IPieRepository, MockPieRepository>();     //whenever someone is asking for an IPieRepo, new instance of MockPieRepo will be returned
+            //services.AddSingleton                                         //only one single instance is going to be created of the type, same instance will always be returned
+            //services.AddScoped                                            //returnes the same instance. If request goes out of scope, instance is removed and with the next request, a new instance will be returned
+
             services.AddMvc();
         }
 
