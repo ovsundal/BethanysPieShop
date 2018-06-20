@@ -37,7 +37,13 @@ namespace BethanysPieShop
             app.UseDeveloperExceptionPage();    //adds exception when something goes wrong in app - ONLY use in dev mode
             app.UseStatusCodePages();           //show info about status of request (e.g. status 400 or 500)
             app.UseStaticFiles();               //search wwwroot by default and return static file from there
-            app.UseMvcWithDefaultRoute();       
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}"
+                    );
+            });
         }
     }
 }
